@@ -4,11 +4,14 @@ import { GameMachineContext } from "../providers";
 
 const Grid = styled.div`
   display: grid;
+  flex-grow: 1;
+  width: 100%;
+  max-width: 400px;
+  min-width: 200px;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
-  width: 400px;
-  border: 1px solid black;
-  box-shadow: 0 0 20px gray;
+  border: 0.1rem solid white;
+  box-shadow: 0 0 0.3rem white;
 `;
 
 const Board = () => {
@@ -17,8 +20,14 @@ const Board = () => {
 
   console.log(state.context.count);
 
+  const winner = calculateWinner(state.context.scoreBoard);
+  if (winner) {
+    actor.send({ type: "won" });
+  } else if (state.context.count === 9) {
+    actor.send({ type: "draw" });
+  }
+
   const onMove = (index: number) => {
-    // console.log(state.context.isPlayerO);
     const newScoreBoard = state.context.scoreBoard.map((squareValue, i) => {
       if (i === index) {
         if (state.context.isPlayerO) return "O";
@@ -39,3 +48,27 @@ const Board = () => {
 };
 
 export default Board;
+
+function calculateWinner(scoreBoard: Array<null | "X" | "O">) {
+  const winLines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  for (let i = 0; i < winLines.length; i++) {
+    const [a, b, c] = winLines[i];
+    if (
+      scoreBoard[a] &&
+      scoreBoard[a] === scoreBoard[b] &&
+      scoreBoard[a] === scoreBoard[c]
+    ) {
+      return scoreBoard[a];
+    }
+  }
+  return null;
+}

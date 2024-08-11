@@ -2,7 +2,7 @@ import { assign, createMachine } from "xstate";
 
 export const gameStateMachine = createMachine({
   id: "gameState",
-  initial: "playing",
+  initial: "idle",
   context: {
     count: 0,
     isPlayerO: true,
@@ -16,7 +16,6 @@ export const gameStateMachine = createMachine({
       on: {
         won: "won",
         draw: "draw",
-        reset: "idle",
         move: {
           actions: assign({
             count: ({ context }) => context.count + 1,
@@ -24,13 +23,39 @@ export const gameStateMachine = createMachine({
             scoreBoard: ({ event }) => event.value,
           }),
         },
+        reset: {
+          target: "idle",
+          actions: assign({
+            count: 0,
+            isPlayerO: true,
+            scoreBoard: Array.from(Array(9)).fill(null),
+          }),
+        },
       },
     },
     won: {
-      on: { reset: "idle" },
+      on: {
+        reset: {
+          target: "idle",
+          actions: assign({
+            count: 0,
+            isPlayerO: true,
+            scoreBoard: Array.from(Array(9)).fill(null),
+          }),
+        },
+      },
     },
     draw: {
-      on: { reset: "idle" },
+      on: {
+        reset: {
+          target: "idle",
+          actions: assign({
+            count: 0,
+            isPlayerO: true,
+            scoreBoard: Array.from(Array(9)).fill(null),
+          }),
+        },
+      },
     },
   },
 });

@@ -1,14 +1,26 @@
 import styled from "styled-components";
+import { FaO, FaX } from "react-icons/fa6";
 
 const Button = styled.button`
   aspect-ratio: 1/1;
   background: none;
   outline: none;
-  border: 1px solid black;
+  border: 0.1rem solid white;
+  box-shadow: 0 0 0.3rem white inset;
   cursor: pointer;
-  border-radius: 0;
   width: 100%;
-  box-shadow: 0 0 4px gray inset;
+
+  .iconX {
+    width: 80%;
+    height: 80%;
+    color: rgb(0, 36, 84);
+  }
+
+  .iconO {
+    width: 80%;
+    height: 80%;
+    color: white;
+  }
 `;
 
 const Square = ({
@@ -20,7 +32,12 @@ const Square = ({
   square: null | string;
   onClick: (index: number) => void;
 }) => {
-  const value = square === "X" ? "X" : square === "O" ? "O" : null;
+  const value =
+    square === "X" ? (
+      <FaX className="iconX" />
+    ) : square === "O" ? (
+      <FaO className="iconO" />
+    ) : null;
 
   const onSquareClick = () => {
     onClick(index);
