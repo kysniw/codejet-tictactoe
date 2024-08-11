@@ -5,6 +5,7 @@ import Panel from "./components/Panel";
 // const SQUARES_NUMBER = 9;
 
 const Container = styled.div`
+  position: relative;
   background-size: cover;
   background-image: url("./background.svg");
   width: 100%;
@@ -34,6 +35,16 @@ const Card = styled.div`
   }
 `;
 
+const BGJar = styled.div`
+  position: absolute;
+  background-color: rgb(0, 36, 84);
+  color: white;
+  border-radius: 0.5rem 0.5rem 0 0;
+  padding: 0.5rem 1rem;
+  bottom: 0;
+  /* inset: 0; */
+`;
+
 function App() {
   return (
     <Container>
@@ -41,6 +52,12 @@ function App() {
         <Panel />
         <Board />
       </Card>
+      <BGJar>
+        Free SVG Background by{" "}
+        <a target="_blank" href="https://bgjar.com">
+          BGJar
+        </a>
+      </BGJar>
     </Container>
   );
 }
