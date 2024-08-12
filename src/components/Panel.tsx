@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import { GameMachineContext } from "../providers";
 import { FaO, FaX } from "react-icons/fa6";
+import { ActorRefFrom, SnapshotFrom } from "xstate";
+import { gameStateMachine } from "../gameMachine";
 
 const Container = styled.div`
   display: flex;
@@ -96,10 +97,16 @@ const Button = styled.button`
   }
 `;
 
-const Panel = () => {
-  const state = GameMachineContext.useSelector((state) => state);
-  const actor = GameMachineContext.useActorRef();
+type GameMachineSnapshot = SnapshotFrom<typeof gameStateMachine>;
+type ActorGameMachineRef = ActorRefFrom<typeof gameStateMachine>;
 
+const Panel = ({
+  state,
+  actor,
+}: {
+  state: GameMachineSnapshot;
+  actor: ActorGameMachineRef;
+}) => {
   let title = "Players";
 
   if (state.matches("won")) title = "Winner";

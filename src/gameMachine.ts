@@ -1,6 +1,14 @@
-import { assign, createMachine } from "xstate";
+import { assign, setup } from "xstate";
 
-export const gameStateMachine = createMachine({
+export const gameStateMachine = setup({
+  types: {
+    context: {} as {
+      count: number;
+      isPlayerO: boolean;
+      scoreBoard: Array<null | "O" | "X">;
+    },
+  },
+}).createMachine({
   id: "gameState",
   initial: "idle",
   context: {

@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Square from "./Square";
-import { GameMachineContext } from "../providers";
+import { SnapshotFrom, ActorRefFrom } from "xstate";
+import { gameStateMachine } from "../gameMachine";
+import { useEffect } from "react";
 
 const Grid = styled.div`
   display: grid;
@@ -14,18 +16,26 @@ const Grid = styled.div`
   box-shadow: 0 0 0.3rem white;
 `;
 
-const Board = () => {
-  const state = GameMachineContext.useSelector((state) => state);
-  const actor = GameMachineContext.useActorRef();
+type GameMachineSnapshot = SnapshotFrom<typeof gameStateMachine>;
+type ActorGameMachineRef = ActorRefFrom<typeof gameStateMachine>;
 
-  console.log(state.context.count);
+const Board = ({
+  state,
+  actor,
+}: {
+  state: GameMachineSnapshot;
+  actor: ActorGameMachineRef;
+}) => {
+  // console.log(state.context.count);
 
-  const winner = calculateWinner(state.context.scoreBoard);
-  if (winner) {
-    actor.send({ type: "won" });
-  } else if (state.context.count === 9) {
-    actor.send({ type: "draw" });
-  }
+  useEffect(() => {
+    const winner = calculateWinner(state.context.scoreBoard);
+    if (winner) {
+      actor.send({ type: "won" });
+    } else if (state.context.count === 9) {
+      actor.send({ type: "draw" });
+    }
+  }, [state, actor]);
 
   const onMove = (index: number) => {
     const newScoreBoard = state.context.scoreBoard.map((squareValue, i) => {

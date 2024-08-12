@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Board from "./components/Board";
 import Panel from "./components/Panel";
+import { GameMachineContext } from "./providers";
 
 // const SQUARES_NUMBER = 9;
 
@@ -46,11 +47,13 @@ const BGJar = styled.div`
 `;
 
 function App() {
+  const state = GameMachineContext.useSelector((state) => state);
+  const actor = GameMachineContext.useActorRef();
   return (
     <Container>
       <Card>
-        <Panel />
-        <Board />
+        <Panel state={state} actor={actor} />
+        <Board state={state} actor={actor} />
       </Card>
       <BGJar>
         Free SVG Background by{" "}
