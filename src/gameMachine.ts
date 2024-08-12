@@ -1,11 +1,12 @@
 import { assign, setup } from "xstate";
+import { ScoreBoard } from "./libs/types";
 
 export const gameStateMachine = setup({
   types: {
     context: {} as {
       count: number;
       isPlayerO: boolean;
-      scoreBoard: Array<null | "O" | "X">;
+      scoreBoard: Array<ScoreBoard>;
     },
   },
 }).createMachine({

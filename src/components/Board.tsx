@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import Square from "./Square";
-import { SnapshotFrom, ActorRefFrom } from "xstate";
-import { gameStateMachine } from "../gameMachine";
 import { useEffect } from "react";
+import { calculateWinner } from "../libs/functions";
+import { GameMachineSnapshot, ActorGameMachineRef } from "../libs/types";
 
 const Grid = styled.div`
   display: grid;
@@ -15,9 +15,6 @@ const Grid = styled.div`
   border: 0.1rem solid white;
   box-shadow: 0 0 0.3rem white;
 `;
-
-type GameMachineSnapshot = SnapshotFrom<typeof gameStateMachine>;
-type ActorGameMachineRef = ActorRefFrom<typeof gameStateMachine>;
 
 const Board = ({
   state,
@@ -58,27 +55,3 @@ const Board = ({
 };
 
 export default Board;
-
-function calculateWinner(scoreBoard: Array<null | "X" | "O">) {
-  const winLines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (let i = 0; i < winLines.length; i++) {
-    const [a, b, c] = winLines[i];
-    if (
-      scoreBoard[a] &&
-      scoreBoard[a] === scoreBoard[b] &&
-      scoreBoard[a] === scoreBoard[c]
-    ) {
-      return scoreBoard[a];
-    }
-  }
-  return null;
-}

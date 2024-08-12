@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { FaO, FaX } from "react-icons/fa6";
-import { ActorRefFrom, SnapshotFrom } from "xstate";
-import { gameStateMachine } from "../gameMachine";
+import { GameMachineSnapshot, ActorGameMachineRef } from "../libs/types";
 
 const Container = styled.div`
   display: flex;
@@ -96,9 +95,6 @@ const Button = styled.button`
     }
   }
 `;
-
-type GameMachineSnapshot = SnapshotFrom<typeof gameStateMachine>;
-type ActorGameMachineRef = ActorRefFrom<typeof gameStateMachine>;
 
 const Panel = ({
   state,

@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import Board from "./components/Board";
 import Panel from "./components/Panel";
-import { GameMachineContext } from "./providers";
+import { useActorRef, useMachine } from "@xstate/react";
+import { gameStateMachine } from "./gameMachine";
 
 // const SQUARES_NUMBER = 9;
 
@@ -47,8 +48,8 @@ const BGJar = styled.div`
 `;
 
 function App() {
-  const state = GameMachineContext.useSelector((state) => state);
-  const actor = GameMachineContext.useActorRef();
+  const [state] = useMachine(gameStateMachine);
+  const actor = useActorRef(gameStateMachine);
   return (
     <Container>
       <Card>
