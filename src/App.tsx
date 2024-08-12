@@ -1,10 +1,8 @@
 import styled from "styled-components";
 import Board from "./components/Board";
 import Panel from "./components/Panel";
-import { useActorRef, useMachine } from "@xstate/react";
+import { useMachine } from "@xstate/react";
 import { gameStateMachine } from "./gameMachine";
-
-// const SQUARES_NUMBER = 9;
 
 const Container = styled.div`
   position: relative;
@@ -48,13 +46,13 @@ const BGJar = styled.div`
 `;
 
 function App() {
-  const [state] = useMachine(gameStateMachine);
-  const actor = useActorRef(gameStateMachine);
+  const [state, send] = useMachine(gameStateMachine);
+
   return (
     <Container>
       <Card>
-        <Panel state={state} actor={actor} />
-        <Board state={state} actor={actor} />
+        <Panel state={state} send={send} />
+        <Board state={state} send={send} />
       </Card>
       <BGJar>
         Free SVG Background by{" "}

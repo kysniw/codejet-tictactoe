@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { FaO, FaX } from "react-icons/fa6";
-import { GameMachineSnapshot, ActorGameMachineRef } from "../libs/types";
+import { GameMachineSnapshot } from "../libs/types";
+import { AnyEventObject } from "xstate";
 
 const Container = styled.div`
   display: flex;
@@ -98,10 +99,10 @@ const Button = styled.button`
 
 const Panel = ({
   state,
-  actor,
+  send,
 }: {
   state: GameMachineSnapshot;
-  actor: ActorGameMachineRef;
+  send: (event: AnyEventObject) => void;
 }) => {
   let title = "Players";
 
@@ -135,12 +136,12 @@ const Panel = ({
       </Players>
       <Buttons>
         <Button
-          onClick={() => actor.send({ type: "start" })}
+          onClick={() => send({ type: "start" })}
           disabled={!state.matches("idle")}
         >
           Start
         </Button>
-        <Button onClick={() => actor.send({ type: "reset" })}>Reset</Button>
+        <Button onClick={() => send({ type: "reset" })}>Reset</Button>
       </Buttons>
     </Container>
   );

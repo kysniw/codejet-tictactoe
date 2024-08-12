@@ -2,7 +2,8 @@ import styled from "styled-components";
 import Square from "./Square";
 import { useEffect } from "react";
 import { calculateWinner } from "../libs/functions";
-import { GameMachineSnapshot, ActorGameMachineRef } from "../libs/types";
+import { GameMachineSnapshot } from "../libs/types";
+import { AnyEventObject } from "xstate";
 
 const Grid = styled.div`
   display: grid;
@@ -18,21 +19,21 @@ const Grid = styled.div`
 
 const Board = ({
   state,
-  actor,
+  send,
 }: {
   state: GameMachineSnapshot;
-  actor: ActorGameMachineRef;
+  send: (event: AnyEventObject) => void;
 }) => {
   // console.log(state.context.count);
 
   useEffect(() => {
     const winner = calculateWinner(state.context.scoreBoard);
     if (winner) {
-      actor.send({ type: "won" });
+      send({ type: "won" });
     } else if (state.context.count === 9) {
-      actor.send({ type: "draw" });
+      send({ type: "draw" });
     }
-  }, [state, actor]);
+  }, [state, send]);
 
   const onMove = (index: number) => {
     const newScoreBoard = state.context.scoreBoard.map((squareValue, i) => {
@@ -44,7 +45,7 @@ const Board = ({
 
     // console.log(newScoreBoard);
 
-    actor.send({ type: "move", value: newScoreBoard });
+    send({ type: "move", value: newScoreBoard });
   };
 
   const generateSquares = state.context.scoreBoard.map((square, index) => (
